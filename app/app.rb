@@ -7,6 +7,10 @@ module Bw
 
     enable :sessions
 
+    get '/' do
+      render 'base/home'
+    end
+
     ##
     # Caching support.
     #
