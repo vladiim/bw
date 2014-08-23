@@ -1,0 +1,9 @@
+---
+:orm: sequel
+:test: rspec
+:mock: rr
+:script: jquery
+:renderer: haml
+:stylesheet: scss
+:namespace: Bw
+:migration_format: number
