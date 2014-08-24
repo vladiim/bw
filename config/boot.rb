@@ -7,6 +7,38 @@ require 'rubygems' unless defined?(Gem)
 require 'bundler/setup'
 Bundler.require(:default, RACK_ENV)
 
+# Load dotenv
+require 'dotenv'
+Dotenv.load
+
+# Link Carrier Wave to AWS through Fog
+require 'fog/aws/storage'
+require 'carrierwave'
+
+def fog_directory
+  case Padrino.env
+  when :development
+    'blackwhite'
+  when :test
+    'blackwhite'
+  when :production
+    'blackwhite'
+  else
+    raise 'Padrino.env needs to be :development, :test or :production'
+  end
+end
+
+CarrierWave.configure do |config|
+  config.fog_credentials = {
+    :provider               => 'AWS',
+    :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],
+    :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY']
+  }
+  config.fog_directory  = 'blackwhite' # change depending on env
+  config.fog_public     = true
+  config.fog_attributes = { 'Cache-Control'=>'max-age=315576000' }
+end
+
 ##
 # ## Enable devel logging
 #

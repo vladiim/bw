@@ -1,0 +1,14 @@
+= form_for :image, url(:images, :create), :method=>"post", :enctype=>"multipart/form-data" do |f|
+  / =partial 'articles/form', :locals => { :f => f }
+
+  %fieldset.control-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title
+
+  %fieldset.control-group
+    =f.label :file, :class => 'control-label'
+    .controls
+      = f.file_field :file
+
+  =f.submit :upload, :class => 'btn btn-info', :name => 'upload', value: 'Upload'

@@ -8,6 +8,8 @@ gem 'oj', '~> 2.10.2'
 
 # Project requirements
 gem 'rake', '~> 10.3.2'
+gem "fog", require: "fog/aws/storage"
+gem "carrierwave"
 
 # Component requirements
 gem 'bcrypt'
@@ -24,12 +26,14 @@ group :test do
   gem 'rspec',            '~> 3.0.0'
   gem 'rack-test',        '~> 0.6.2', :require => 'rack/test'
   gem 'capybara',         '~> 2.4.1'
-  # gem 'capybara-padrino', '~> 0.0.1'
   gem 'launchy',          '~> 2.4.2'
 end
 
 # Development helper gems
-gem 'debugger', '~> 1.6.8'
+group :test, :development do
+  gem 'debugger', '~> 1.6.8'
+  gem 'dotenv',   '~> 0.11.1'
+end
 
 # Padrino Stable Gem
 gem 'padrino', '~> 0.12.3'
