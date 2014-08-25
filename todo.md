@@ -43,4 +43,9 @@ Publisher: publishes static files to AWS?
 * haml boilerplate: https://raw.githubusercontent.com/jameslutley/haml-html5-boilerplate/master/boilerplate.haml
 * heroku:
 * bootstrap:
-* 
+
+***
+
+# TODO
+
+* When admin deletes image, delete from Amazon
