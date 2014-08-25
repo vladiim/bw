@@ -6,6 +6,7 @@ class Image < Sequel::Model
     file[:filename] = image_name(file[:filename])
     couldnt_save(file) unless uploader.store!(file)
     @url = uploader.url
+    save
   end
 
   private

@@ -1,1 +1,7 @@
-= partial 'images/form'
+%ul.nav.nav-tabs
+  %li=link_to tag_icon(:list, pat(:list)), url(:images, :index)
+  %li.active=link_to tag_icon(:plus, pat(:new)), url(:images, :new)
+
+.tabs-content
+  = form_for :image, url(:images, :create), :class => 'form-horizontal' do |f|
+    =partial 'images/form', :locals => { :f => f }

@@ -1,13 +1,18 @@
-= form_for :image, url(:images, :create), :method=>"post", :enctype=>"multipart/form-data" do |f|
+- error = @image.errors.key?(:title) && @image.errors[:title].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :title, :class => 'control-label'
+  .controls
+    ~f.text_area :title, :class => 'form-control input-large input-with-feedback', :autofocus => true
+    %span.help-inline=error ? f.error_message_on(:title, :class => 'text-error') : pat(:example)
 
-  %fieldset.control-group
-    = f.label :title, :class => 'control-label'
-    .controls
-      = f.text_field :title
+%fieldset.control-group
+  =f.label :file, :class => 'control-label'
+  .controls
+    = f.file_field :file
 
-  %fieldset.control-group
-    =f.label :file, :class => 'control-label'
-    .controls
-      = f.file_field :file
-
-  =f.submit :upload, :class => 'btn btn-info', :name => 'upload', value: 'Upload'
+.form-actions
+  =f.submit pat(:save), :class => 'btn btn-primary'
+  &nbsp;
+  =f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  &nbsp;
+  =link_to pat(:cancel), url(:images, :index), :class => 'btn btn-default'
