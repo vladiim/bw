@@ -7,9 +7,10 @@ gem 'thin', '~> 1.6.2'
 gem 'oj', '~> 2.10.2'
 
 # Project requirements
-gem 'rake', '~> 10.3.2'
-gem "fog", require: "fog/aws/storage"
-gem "carrierwave"
+gem 'rake',        '~> 10.3.2'
+gem 'fog',         '~> 1.23.0', require: "fog/aws/storage"
+gem 'carrierwave', '~> 0.10.0'
+gem 'mini_magick', '~> 3.8.0'
 
 # Component requirements
 gem 'bcrypt'

@@ -1,4 +1,4 @@
-Bw::App.controllers :images do
+Bw::Admin.controllers :images do
   
   # get :index, :map => '/foo/bar' do
   #   session[:foo] = 'bar'
@@ -18,18 +18,17 @@ Bw::App.controllers :images do
   # get '/example' do
   #   'Hello world!'
   # end
-  
+
   get :new do
-    render 'images/new'
+    render "images/new"
   end
 
+  # post :create, provides: [:js] do
   post :create do
     image_data = params.fetch('image')
     title = image_data.fetch('title')
-    # require 'debugger'; debugger
     file = image_data.fetch('file')
-    @image = Image.new
-    @image.upload!(title, file)
+    @image = Image.new.upload!(title, file)
   end
 
 end

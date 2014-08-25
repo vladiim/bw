@@ -17,12 +17,9 @@ require 'carrierwave'
 
 def fog_directory
   case Padrino.env
-  when :development
-    'blackwhite'
-  when :test
-    'blackwhite'
-  when :production
-    'blackwhite'
+  when :development; 'blackwhite'
+  when :test; 'blackwhite'
+  when :production; 'blackwhite'
   else
     raise 'Padrino.env needs to be :development, :test or :production'
   end

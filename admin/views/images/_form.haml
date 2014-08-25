@@ -1,5 +1,4 @@
 = form_for :image, url(:images, :create), :method=>"post", :enctype=>"multipart/form-data" do |f|
-  / =partial 'articles/form', :locals => { :f => f }
 
   %fieldset.control-group
     = f.label :title, :class => 'control-label'

@@ -1,13 +1,20 @@
 class Image < Sequel::Model
 
-  def upload!(title, file)
-    uploader = ImageUploader.new
+  attr_accessor :title, :url, :thumb_url
+  def upload!(title, file, uploader = ImageUploader.new)
     @title = title
-    # rename file to datetime + title with underscores
-    # @main = uploader.url
-    # @thumb = uploader.thumb.url
-    uploader.store!(file) # returns nil if bad
-    uploader.url
+    file[:filename] = image_name(file[:filename])
+    couldnt_save(file) unless uploader.store!(file)
+    @url = uploader.url
   end
 
+  private
+  def couldnt_save(file)
+    raise "File: #{file}; could not be saved"
+  end
+
+  def image_name(current_name)
+    title = @title.downcase.gsub(' ', '-')
+    title + current_name.match(/.(jpg|jpeg|gif|png)/)[0]
+  end
 end
