@@ -1,8 +1,13 @@
 class Image < Sequel::Model
 
-  attr_accessor :title, :file
+  attr_accessor :title, :file, :url
 
-  attr_accessor :url
+  plugin :validation_helpers
+
+  def validate
+    validates_presence :title
+  end
+
   def upload!(uploader = ImageUploader.new)
     file[:filename] = image_name(file[:filename])
     couldnt_save(file) unless uploader.store!(file)

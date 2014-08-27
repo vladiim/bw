@@ -1,10 +1,12 @@
-RACK_ENV = 'test' unless defined?(RACK_ENV)
+# RACK_ENV = 'test' unless defined?(RACK_ENV)
+require File.expand_path(File.dirname(__FILE__) + "light_spec_helper")
 require File.expand_path(File.dirname(__FILE__) + "/../config/boot")
-require 'rr'
+# require 'rr'
 Dir[File.expand_path(File.dirname(__FILE__) + "/../app/helpers/**/*.rb")].each(&method(:require))
 
 RSpec.configure do |conf|
-  conf.mock_with :rr
+  # conf.mock_with :rr
+  # conf.include RspecSequel::Matchers
   conf.include Rack::Test::Methods
 end
 

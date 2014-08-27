@@ -1,20 +1,22 @@
-require 'spec_helper'
+require_relative '../light_spec_helper'
+require_relative '../../models/image'
 
 RSpec.describe Image do
-  let(:image) { Image.new(params) }
-  let(:mock)  { MockImageUploader.new }
+  let(:image)  { Image.new(params) }
+  let(:mock)   { MockImageUploader.new }
   let(:file)   { 'IMAGE FILE' }
-  let(:params) { {"title"=>"IMAGE TITLE", "file"=>file} }
+  let(:params) { { 'title'=>'IMAGE TITLE', 'file'=>file } }
+
+  describe 'validations', focus: true do
+    it { is_expected.to have_column :title, type: String }
+    it { is_expected.to validate_presence :title, allow_nil: true }
+  end
 
   describe '#initialize' do
     it 'sets up the image title and file' do
       expect(image.title).to eq 'IMAGE TITLE'
       expect(image.file).to  eq 'IMAGE FILE'
     end
-  end
-
-  describe 'validations' do
-    it 'validates title uniqueness' do
   end
 
   describe '#upload!' do
@@ -67,7 +69,6 @@ class MockImageUploader
     return nil if file == invalid_file
     @url = 'UPLOADER URL'
   end
-
 end
 
 def invalid_file

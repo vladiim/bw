@@ -23,11 +23,12 @@ gem 'sequel',        '~> 4.13.0'
 
 # Test requirements
 group :test do
-  gem 'rr',               '~> 1.1.2', :require => false
-  gem 'rspec',            '~> 3.0.0'
-  gem 'rack-test',        '~> 0.6.2', :require => 'rack/test'
-  gem 'capybara',         '~> 2.4.1'
-  gem 'launchy',          '~> 2.4.2'
+  gem 'rr',        '~> 1.1.2', :require => false
+  gem 'rspec',     '~> 3.0.0'
+  gem 'rack-test', '~> 0.6.2', :require => 'rack/test'
+  gem 'capybara',  '~> 2.4.1'
+  gem 'launchy',   '~> 2.4.2'
+  gem 'rspec_sequel_matchers', '~> 0.4.0'
 end
 
 # Development helper gems
