@@ -29,6 +29,7 @@
         %th.header= mat(:image, :id)
         %th.header= mat(:image, :title)
         %th.header= mat(:image, :url)
+        %th.header Image
         %th.header.list-row-action-header
 
     %tbody
@@ -37,8 +38,10 @@
           %td.list-column.list-selectable
             =check_box_tag 'image_ids[]', :value => image.id, :class => 'list-selectable-checkbox'
           %td.list-column=image.id
-          %td.list-column=image.title
-          %td.list-column=image.url
+          %td.list-column=image.values[:title]
+          %td.list-column=image.values[:url]
+          %td.list-column
+            %img{ src: image.values[:url] }
           %td.list-column.list-row-action
             .list-row-action-wrapper
               =link_to tag_icon(:edit), :href => url(:images, :edit, :id => image.id), :rel => :tooltip, :title => "#{pat(:edit)} image", :class => 'list-row-action-wrapper-link'

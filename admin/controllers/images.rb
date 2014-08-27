@@ -12,21 +12,17 @@ Bw::Admin.controllers :images do
   end
 
   post :create do
-    image_data = params.fetch('image')
-    title = image_data.fetch('title')
-    file = image_data.fetch('file')
-    @image = Image.new.upload!(title, file)
-    redirect(url(:images, :edit, :id => @image.id))
-    # @image = Image.new(params[:image])
-    # if (@image.save rescue false)
-    #   @title = pat(:create_title, :model => "image #{@image.id}")
-    #   flash[:success] = pat(:create_success, :model => 'Image')
-    #   params[:save_and_continue] ? redirect(url(:images, :index)) : redirect(url(:images, :edit, :id => @image.id))
-    # else
-    #   @title = pat(:create_title, :model => 'image')
-    #   flash.now[:error] = pat(:create_error, :model => 'image')
-    #   render 'images/new'
-    # end
+    @image = Image.new(params[:image])
+
+    if (@image.upload! rescue false)
+      @title = pat(:create_title, :model => "image #{@image.id}")
+      flash[:success] = pat(:create_success, :model => 'Image')
+      params[:save_and_continue] ? redirect(url(:images, :index)) : redirect(url(:images, :edit, :id => @image.id))
+    else
+      @title = pat(:create_title, :model => 'image')
+      flash.now[:error] = pat(:create_error, :model => 'image')
+      render 'images/new'
+    end
   end
 
   get :edit, :with => :id do

@@ -4,6 +4,7 @@ require 'rr'
 Dir[File.expand_path(File.dirname(__FILE__) + "/../app/helpers/**/*.rb")].each(&method(:require))
 
 RSpec.configure do |conf|
+  conf.mock_with :rr
   conf.include Rack::Test::Methods
 end
 
