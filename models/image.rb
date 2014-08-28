@@ -1,11 +1,12 @@
 class Image < Sequel::Model
 
-  attr_accessor :title, :file, :url
+  attr_accessor :title, :file, :url, :created_at
 
   plugin :validation_helpers
 
   def validate
-    validates_presence :title
+    validates_presence :title, allow_nil: false
+    validates_presence :url, allow_nil: false
   end
 
   def upload!(uploader = ImageUploader.new)
@@ -13,6 +14,7 @@ class Image < Sequel::Model
     couldnt_save(file) unless uploader.store!(file)
     self.values[:title] = title
     self.values[:url] = uploader.url
+    self.values[:created_at] = DateTime.now
     save
   end
 

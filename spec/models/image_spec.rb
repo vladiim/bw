@@ -7,9 +7,19 @@ RSpec.describe Image do
   let(:file)   { 'IMAGE FILE' }
   let(:params) { { 'title'=>'IMAGE TITLE', 'file'=>file } }
 
-  describe 'validations', focus: true do
+  describe 'validations' do
+    # title
     it { is_expected.to have_column :title, type: String }
-    it { is_expected.to validate_presence :title, allow_nil: true }
+    it { is_expected.to validate_presence :title, allow_nil: false }
+    # url
+    it { is_expected.to have_column :url, type: String }
+    it { is_expected.to validate_presence :url, allow_nil: false }
+    # photographer_id
+    it { is_expected.to have_column :photographer_id, type: Integer }
+
+
+    # created_at
+    # it { is_expected.to have_column :created_at, type: DateTime }
   end
 
   describe '#initialize' do
@@ -20,10 +30,10 @@ RSpec.describe Image do
   end
 
   describe '#upload!' do
-    before { stub(image).save { 'SAVE' } }
+    before { allow(image).to receive(:save) { 'SAVE' } }
 
     context 'valid file' do
-      let(:file) { {:filename=>"blah.jpg", :type=>"image/jpeg", :name=>"image[file]", :tempfile=>Object.new, :head=>"Content-Disposition: form-data; name=\"image[file]\"; filename=\"blah.jpg\"\r\nContent-Type: image/jpeg\r\n"} }
+      let(:file) { {:filename=>'blah.jpg', :type=>'image/jpeg', :name=>'image[file]', :tempfile=>Object.new, :head=>'Content-Disposition: form-data; name=\'image[file]\'; filename=\'blah.jpg\'\r\nContent-Type: image/jpeg\r\n'} }
 
       before { image.upload!(mock) }
 
@@ -39,13 +49,18 @@ RSpec.describe Image do
         expect(image.values[:url]).to eq 'UPLOADER URL'
       end
 
+      it "saves the image's created_at date to the current time", focus: true do
+        require 'debugger'; debugger
+        expect(image.values[:created_at]).to be_within DateTime.now
+      end
+
       it 'saves the image' do
         expect(image.upload!(mock)).to eq 'SAVE'
       end
     end
 
     context 'invalid file name' do
-      let(:file) { {:filename=>"blah.INVALID", :type=>"image/jpeg", :name=>"image[file]", :tempfile=>Object.new, :head=>"Content-Disposition: form-data; name=\"image[file]\"; filename=\"blah.jpg\"\r\nContent-Type: image/jpeg\r\n"} }
+      let(:file) { {:filename=>'blah.INVALID', :type=>'image/jpeg', :name=>'image[file]', :tempfile=>Object.new, :head=>'Content-Disposition: form-data; name=\'image[file]\'; filename=\'blah.jpg\'\r\nContent-Type: image/jpeg\r\n'} }
 
       it 'raises an InvalidFileName exception' do
         expect { image.upload!(mock) }.to raise_error(Image::InvalidFileName)
@@ -72,5 +87,5 @@ class MockImageUploader
 end
 
 def invalid_file
-  { :filename=>"image-title.jpeg", "BAD FILE"=>nil }
+  { :filename=>'image-title.jpeg', 'BAD FILE'=>nil }
 end
