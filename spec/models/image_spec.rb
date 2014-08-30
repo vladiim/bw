@@ -16,10 +16,9 @@ RSpec.describe Image do
     it { is_expected.to validate_presence :url, allow_nil: false }
     # photographer_id
     it { is_expected.to have_column :photographer_id, type: Integer }
-
-
     # created_at
-    # it { is_expected.to have_column :created_at, type: DateTime }
+    it { is_expected.to have_column :created_at, type: :datetime }
+    it { is_expected.to validate_presence :created_at, allow_nil: false }
   end
 
   describe '#initialize' do
@@ -47,11 +46,18 @@ RSpec.describe Image do
 
       it "saves the image's url as the uploader's url" do
         expect(image.values[:url]).to eq 'UPLOADER URL'
+        expect(image.url).to eq 'UPLOADER URL'
       end
 
-      it "saves the image's created_at date to the current time", focus: true do
-        require 'debugger'; debugger
-        expect(image.values[:created_at]).to be_within DateTime.now
+      it "saves the image's created_at date to the current time" do
+        expect(image.values[:created_at].year).to  eq DateTime.now.year
+        expect(image.values[:created_at].month).to eq DateTime.now.month
+        expect(image.values[:created_at].day).to   eq DateTime.now.day
+        expect(image.values[:created_at].hour).to  eq DateTime.now.hour
+        expect(image.created_at.year).to  eq DateTime.now.year
+        expect(image.created_at.month).to eq DateTime.now.month
+        expect(image.created_at.day).to   eq DateTime.now.day
+        expect(image.created_at.hour).to  eq DateTime.now.hour
       end
 
       it 'saves the image' do

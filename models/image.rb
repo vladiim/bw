@@ -1,20 +1,21 @@
 class Image < Sequel::Model
 
-  attr_accessor :title, :file, :url, :created_at
-
   plugin :validation_helpers
+
+  attr_accessor :title, :file, :url, :created_at
 
   def validate
     validates_presence :title, allow_nil: false
     validates_presence :url, allow_nil: false
+    validates_presence :created_at, allow_nil: false
   end
 
   def upload!(uploader = ImageUploader.new)
     file[:filename] = image_name(file[:filename])
     couldnt_save(file) unless uploader.store!(file)
-    self.values[:title] = title
-    self.values[:url] = uploader.url
-    self.values[:created_at] = DateTime.now
+    @values[:title] = title
+    @url = @values[:url] = uploader.url
+    @created_at = @values[:created_at] = DateTime.now
     save
   end
 
@@ -24,14 +25,17 @@ class Image < Sequel::Model
     raise(InvalidFile, "File: #{file}; could not be saved")
   end
 
+  def accepted_extentions
+    /.(jpg|jpeg|gif|png)/
+  end
+
   def image_name(current_name)
-    match     = /.(jpg|jpeg|gif|png)/
-    extention = current_name.match(match) || raise_invalid_filename(current_name, match)
+    extention = current_name.match(accepted_extentions) || raise_invalid_filename(current_name)
     title     = @title.downcase.gsub(' ', '-')
     title + extention[0]
   end
 
-  def raise_invalid_filename(name, accepted_extentions)
+  def raise_invalid_filename(name)
     raise(InvalidFileName, "#{ name } is not a valid file , must be one of: #{ accepted_extentions }")
   end
 
