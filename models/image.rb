@@ -1,5 +1,7 @@
 class Image < Sequel::Model
 
+  one_through_one :image, class: 'HeroImage'
+
   plugin :validation_helpers
 
   attr_accessor :title, :file, :url, :created_at

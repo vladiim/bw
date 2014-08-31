@@ -24,13 +24,14 @@
   .col-sm-10
     .tab-content
 
+      / Content
       %div{ class: 'tab-pane fade in active', id: 'content'}
         %h4 Content
         - error = @article.errors.key?(:title) && @article.errors[:title].count > 0
         %fieldset.control-group{:class => error ? 'has-error' : ''}
           =f.label :title, :class => 'control-label'
           .controls
-            ~f.text_area :title, :class => 'form-control input-large input-with-feedback', :autofocus => true
+            ~f.text_area :title, :class => 'form-control input-with-feedback', :autofocus => true
             %span.help-inline= f.error_message_on(:title, :class => 'text-error') if error
 
         - error = @article.errors.key?(:body) && @article.errors[:body].count > 0
@@ -40,8 +41,41 @@
             ~f.text_area :body, :class => 'form-control input-large input-with-feedback'
             %span.help-inline= f.error_message_on(:body, :class => 'text-error') if error
 
+      / Hero image
       %div{ class: 'tab-pane fade', id: 'hero-image'}
         %h4 Hero image
+        / Horizontal tabs for adding an image
+        %ul{ class: 'nav nav-tabs', id: 'new-article-image-tabs' }
+          %li.active
+            %a{ href: '#new-image', role: 'tab', 'data-toggle' => 'tab' } Add new
+          %li
+            %a{ href: '#existing-image', role: 'tab', 'data-toggle' => 'tab' } Use existing
+
+        / Content for adding an image
+        .tab-content
+          %div{ class: 'tab-pane fade in active', id: 'new-image' }
+            %fieldset.control-group{:class => error ? 'has-error' : ''}
+              = f.label :image_title, :class => 'control-label'
+              .controls
+                ~f.text_area :image_title, :class => 'form-control input-with-feedback', :autofocus => true
+                %span.help-inline= f.error_message_on(:image_title, :class => 'text-error') if error
+            %fieldset.control-group
+              = f.label :image_file, :class => 'control-label'
+              .controls
+                = f.file_field :image_file
+            / =  f.fields_for :hero_image do |image_form| 
+            /   %fieldset.control-group{:class => error ? 'has-error' : ''}
+            /     = image_form.label :title, :class => 'control-label'
+            /     .controls
+            /       ~image_form.text_area :title, :class => 'form-control input-with-feedback', :autofocus => true
+            /       %span.help-inline= image_form.error_message_on(:title, :class => 'text-error') if error
+            /   %fieldset.control-group
+            /     = image_form.label :file, :class => 'control-label'
+            /     .controls
+            /       = image_form.file_field :file
+
+          %div{ class: 'tab-pane fade', id: 'existing-image' }
+            All the images
 
       %div{ class: 'tab-pane fade', id: 'photographer'}
         %h4 Photographer

@@ -1,6 +1,7 @@
 RACK_ENV = 'test' unless defined?(RACK_ENV)
 # require 'rr'
 require 'sequel'
+require 'ostruct'
 require 'rspec_sequel_matchers'
 # require 'rack/test'
 
