@@ -1,5 +1,5 @@
 # Defines our constants
-RACK_ENV = ENV['RACK_ENV'] ||= 'development'  unless defined?(RACK_ENV)
+RACK_ENV = ENV['RACK_ENV'] ||= 'development' unless defined?(RACK_ENV)
 PADRINO_ROOT = File.expand_path('../..', __FILE__) unless defined?(PADRINO_ROOT)
 
 # Load our dependencies
@@ -15,14 +15,10 @@ Dotenv.load
 require 'fog/aws/storage'
 require 'carrierwave'
 
-def fog_directory
-  case Padrino.env
-  when :development; 'blackwhite'
-  when :test; 'blackwhite'
-  when :production; 'blackwhite'
-  else
-    raise 'Padrino.env needs to be :development, :test or :production'
-  end
+def fog_directory(env = Padrino.env)
+  return 'blackwhite-play' if env == :test || env == :development
+  return 'blackwhite' if env == :production
+  raise "Padrino.env: '#{ env }' isn't :development, :test or :production"
 end
 
 CarrierWave.configure do |config|
@@ -31,7 +27,7 @@ CarrierWave.configure do |config|
     :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],
     :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY']
   }
-  config.fog_directory  = 'blackwhite' # change depending on env
+  config.fog_directory  = fog_directory
   config.fog_public     = true
   config.fog_attributes = { 'Cache-Control'=>'max-age=315576000' }
 end

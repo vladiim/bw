@@ -10,7 +10,7 @@
     %title= @title.present? ? "#{@title} | Padrino Admin" : "Padrino Admin"
     =favicon_tag 'favicon.ico'
     %link{:href => 'http://fonts.googleapis.com/css?family=Varela', :rel => :stylesheet}
-    =stylesheet_link_tag 'bootstrap', 'application'
+    = stylesheet_link_tag 'bootstrap', 'application', '../../stylesheets/admin'
 
   %body
     .navbar.navbar-fixed-top
@@ -47,3 +47,4 @@
           %li= link_to tag_icon(:twitter, 'twitter'), 'http://twitter.com/padrinorb', :target => :_blank, :class => 'footer-links-link'
 
     =javascript_include_tag 'jquery-1.11.0.min', (Padrino.env == :production ? 'bootstrap/bootstrap.min' : %w[bootstrap/affix bootstrap/alert bootstrap/button bootstrap/carousel bootstrap/collapse bootstrap/dropdown  bootstrap/tooltip bootstrap/transition  bootstrap/modal bootstrap/popover bootstrap/scrollspy bootstrap/tab]), :application
+    =javascript_include_tag '../../javascripts/admin_meh'

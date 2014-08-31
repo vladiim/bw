@@ -49,3 +49,4 @@ Publisher: publishes static files to AWS?
 # TODO
 
 * When admin deletes image, delete from Amazon
+* serve all articles from rack::static http://rubydoc.info/github/rack/rack/master/Rack/Static

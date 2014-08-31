@@ -1,58 +1,50 @@
-.container
-  .row
-    .col-sm-6
-      %h3 Article body
-      - error = @article.errors.key?(:title) && @article.errors[:title].count > 0
-      %fieldset.control-group{:class => error ? 'has-error' : ''}
-        =f.label :title, :class => 'control-label'
-        .controls
-          ~f.text_area :title, :class => 'form-control input-large input-with-feedback', :autofocus => true
-          %span.help-inline=error ? f.error_message_on(:title, :class => 'text-error') : pat(:example)
+#article-form.row
+  / Left hand tabs & form actions
+  .col-sm-2
+    %ul{ class: 'nav nav-pills nav-stacked', id: 'new-article-tabs' }
+      %li.active
+        %a{ href: '#content', role: 'tab', 'data-toggle' => 'tab' } Content
+      %li
+        %a{ href: '#hero-image', role: 'tab', 'data-toggle' => 'tab' } Hero image
+      %li
+        %a{ href: '#photographer', role: 'tab', 'data-toggle' => 'tab' } Photographer
+      %li
+        %a{ href: '#meta-data', role: 'tab', 'data-toggle' => 'tab' } Meta data
 
-      = link_to pat(:add_image), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#add-image'
+    %hr
 
-      - error = @article.errors.key?(:body) && @article.errors[:body].count > 0
-      %fieldset.control-group{:class => error ? 'has-error' : ''}
-        =f.label :body, :class => 'control-label'
-        .controls
-          ~f.text_area :body, :class => 'form-control input-large input-with-feedback'
-          %span.help-inline=error ? f.error_message_on(:body, :class => 'text-error') : pat(:example)
+    .form-actions
+      =f.submit pat(:save), :class => 'btn btn-success'
+      &nbsp;
+      =f.submit pat(:publish), :class => 'btn btn-info', :name => 'publish'
+      &nbsp;
+      =link_to pat(:cancel), url(:articles, :index), :class => 'btn btn-default'
 
-    .col-sm-6
-      %h3 Meta data
-      - error = @article.errors.key?(:author_id) && @article.errors[:author_id].count > 0
-      %fieldset.control-group{:class => error ? 'has-error' : ''}
-        =f.label :author_id, :class => 'control-label'
-        .controls
-          =f.text_field :author_id, :class => 'form-control input-large input-with-feedback'
-          %span.help-inline=error ? f.error_message_on(:author_id, :class => 'text-error') : pat(:example)
+  / Right hand tab content
+  .col-sm-10
+    .tab-content
 
-      %fieldset
+      %div{ class: 'tab-pane fade in active', id: 'content'}
+        %h4 Content
+        - error = @article.errors.key?(:title) && @article.errors[:title].count > 0
+        %fieldset.control-group{:class => error ? 'has-error' : ''}
+          =f.label :title, :class => 'control-label'
+          .controls
+            ~f.text_area :title, :class => 'form-control input-large input-with-feedback', :autofocus => true
+            %span.help-inline= f.error_message_on(:title, :class => 'text-error') if error
 
-  .form-actions
-    =f.submit pat(:save), :class => 'btn btn-primary'
-    &nbsp;
-    =f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
-    &nbsp;
-    =link_to pat(:cancel), url(:articles, :index), :class => 'btn btn-default'
+        - error = @article.errors.key?(:body) && @article.errors[:body].count > 0
+        %fieldset.control-group{:class => error ? 'has-error' : ''}
+          =f.label :body, :class => 'control-label'
+          .controls
+            ~f.text_area :body, :class => 'form-control input-large input-with-feedback'
+            %span.help-inline= f.error_message_on(:body, :class => 'text-error') if error
 
-%div{ class: 'modal fade', id: 'add-image', role: 'dialog', 'aria-labelledby' => 'Add image', 'aria-hidden' => 'true' }
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button{ type: 'button', class: 'close', 'data-dismiss' => 'modal' }
-          %span{ 'aria-hidden' => 'true' } &times;
-          %span.sr-only Close
-        %h4.modal-title.add-image-label Add image
-      .modal-body
-        .row
-          .col-md-6
-            %h3 Upload
-            = render_partial 'images/form'
+      %div{ class: 'tab-pane fade', id: 'hero-image'}
+        %h4 Hero image
 
-          .col-md-6
-            %h3 Add existing
-            %p LIST OF IMAGES
+      %div{ class: 'tab-pane fade', id: 'photographer'}
+        %h4 Photographer
 
-      .modal-footer
-        %button{ type: 'button', class: 'btn btn-default', 'data-dismiss' => 'modal' } Close
+      %div{ class: 'tab-pane fade', id: 'meta-data'}
+        %h4 Meta data

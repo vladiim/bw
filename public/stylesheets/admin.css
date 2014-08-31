@@ -1,0 +1,7 @@
+#article-form .form-actions a, #article-form .form-actions input {
+  width: 100%;
+  margin-bottom: -10px; }
+#article-form .form-actions input:first-child {
+  margin-top: 10px; }
+
+/*# sourceMappingURL=admin.css.map */

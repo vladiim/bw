@@ -2,6 +2,8 @@
   %li=link_to tag_icon(:list, pat(:list)), url(:articles, :index)
   %li.active=link_to tag_icon(:plus, pat(:new)), url(:articles, :new)
 
+%h3 New article
+
 .tabs-content
   = form_for :article, url(:articles, :create), :class => 'form-horizontal' do |f|
-    =partial 'articles/form', :locals => { :f => f }
+    = partial 'articles/form', :locals => { :f => f }

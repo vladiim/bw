@@ -1,5 +1,5 @@
 # RACK_ENV = 'test' unless defined?(RACK_ENV)
-require File.expand_path(File.dirname(__FILE__) + "light_spec_helper")
+require File.expand_path(File.dirname(__FILE__) + "/light_spec_helper")
 require File.expand_path(File.dirname(__FILE__) + "/../config/boot")
 # require 'rr'
 Dir[File.expand_path(File.dirname(__FILE__) + "/../app/helpers/**/*.rb")].each(&method(:require))
