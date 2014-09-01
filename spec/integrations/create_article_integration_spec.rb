@@ -18,8 +18,7 @@ describe 'create article', type: :feature do
     # Add the image
     click_link 'Hero image'
     fill_in 'Title:', with: 'IMAGE'
-    click_button 'Add image'
-    # somehow add an image
+    attach_file('Image file:', (Dir.pwd + '/spec/integrations/fixtures/imgres.jpg'))
 
     # Add the photographer
     click_link 'Photographer'
@@ -45,5 +44,10 @@ describe 'create article', type: :feature do
     # visit "/articles/#{ article.id }"
     # expect(page).to have_content 'TITLE'
     # expect(page).to have_content 'BODY'
+
+    # Expect the photographer to have their own page too
+    # visit photographer page
+    # expect first name & last name
+    # expect article in list
   end
 end

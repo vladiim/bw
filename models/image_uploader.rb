@@ -12,9 +12,4 @@ class ImageUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
-
-  # NEED TO TEST!!
-  # def thumb_url
-  #   thumb.url
-  # end
 end

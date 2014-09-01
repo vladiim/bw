@@ -4,5 +4,5 @@
   %li.active=link_to tag_icon(:edit, pat(:edit)), url(:articles, :edit, :id => @article.id)
 
 .tabs-content
-  = form_for :article, url(:articles, :update, :id => @article.id), :method => :put, :class => 'form-horizontal' do |f|
-    = partial 'articles/form', :locals => { :f => f, article: @article }
+  = form_for :article, url(:articles, :update, id: @article.id), method: :put, class: 'form-horizontal' do |f|
+    = partial 'articles/form', locals: { f: f, article: @article }

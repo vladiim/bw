@@ -68,8 +68,44 @@
           %div{ class: 'tab-pane fade', id: 'existing-image' }
             All the images
 
+      / Photographer
       %div{ class: 'tab-pane fade', id: 'photographer'}
         %h4 Photographer
+
+        / Horizontal tabs for adding a photographer
+        %ul{ class: 'nav nav-tabs', id: 'new-article-photographer-tabs' }
+          %li.active
+            %a{ href: '#new-photographer', role: 'tab', 'data-toggle' => 'tab' } Add new
+          %li
+            %a{ href: '#existing-photographer', role: 'tab', 'data-toggle' => 'tab' } Use existing
+
+        / Content for adding a photographer
+        .tab-content
+          %div{ class: 'tab-pane fade in active', id: 'new-photographer' }
+            %fieldset.control-group{ class: error ? 'has-error' : ''}
+              = f.label :first_name, class: 'control-label'
+              .controls
+                ~f.text_field :photographer_first_name, class: 'form-control input-with-feedback', autofocus: true
+                %span.help-inline= f.error_message_on(:photographer_first_name, class: 'text-error') if error
+            %fieldset.control-group{ class: error ? 'has-error' : ''}
+              = f.label :last_name, class: 'control-label'
+              .controls
+                ~f.text_field :photographer_last_name, class: 'form-control input-with-feedback', autofocus: true
+                %span.help-inline= f.error_message_on(:photographer_last_name, class: 'text-error') if error
+            %fieldset.control-group{ class: error ? 'has-error' : ''}
+              = f.label :website, class: 'control-label'
+              .controls
+                ~f.text_field :photographer_website, class: 'form-control input-with-feedback', autofocus: true
+                %span.help-inline= f.error_message_on(:photographer_website, class: 'text-error') if error
+            %fieldset.control-group{ class: error ? 'has-error' : ''}
+              = f.label :bio, class: 'control-label'
+              .controls
+                ~f.text_area :photographer_bio, class: 'form-control input-with-feedback', autofocus: true
+                %span.help-inline= f.error_message_on(:photographer_bio, class: 'text-error') if error
+            %fieldset.control-group
+              = f.label :profile, class: 'control-label'
+              .controls
+                = f.file_field :profile_image
 
       %div{ class: 'tab-pane fade', id: 'meta-data'}
         %h4 Meta data
