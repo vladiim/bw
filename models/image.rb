@@ -24,7 +24,7 @@ class Image < Sequel::Model
   private
 
   def couldnt_save(file)
-    raise(InvalidFile, "File: #{file}; could not be saved")
+    raise(InvalidFileError, "File: #{file}; could not be saved")
   end
 
   def accepted_extentions
@@ -38,9 +38,9 @@ class Image < Sequel::Model
   end
 
   def raise_invalid_filename(name)
-    raise(InvalidFileName, "#{ name } is not a valid file , must be one of: #{ accepted_extentions }")
+    raise(InvalidFileNameError, "#{ name } is not a valid file , must be one of: #{ accepted_extentions }")
   end
 
-  class InvalidFile     < StandardError; end
-  class InvalidFileName < StandardError; end
+  class InvalidFileError     < StandardError; end
+  class InvalidFileNameError < StandardError; end
 end

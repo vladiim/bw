@@ -1,5 +1,7 @@
 class Article < Sequel::Model
 
+  INSTANCES = %w( image )
+
   attr_accessor :image, :hero_image
   def initialize(attrs = {})
     @image      = Image.new
@@ -23,34 +25,41 @@ class Article < Sequel::Model
     hero_image.save
   end
 
-  # def image_title=(title)
-  #   image.title = title
-  # end
-
-  # def image_file=(file)
-  #   image.file = file
-  # end
-
-  def image_url
-    @saved_image ? @saved_image.values[:url] : ''
-  end
-
-  def image_title
-    @saved_image ? @saved_image.values[:title] : ''
-  end
-
-  def method_missing(meth, *args, &block)
-    split_meth    = meth.to_s.split('_')
-    instance      = split_meth[0]
-    instance_meth = split_meth[1..-1].join('_')
-    send_instance_method(instance, instance_meth, args) if self.respond_to?(instance.to_sym)
-  end
-
   private
-  def send_instance_method(instance, instance_meth, args)
-    instance = self.send(instance.to_sym)
-    instance.send(instance_meth.to_sym, args[0]) if instance.respond_to?(instance_meth)
+
+  attr_reader :instance, :split_meth, :args
+  def method_missing(meth, *args, &block)
+    @args       = args
+    @split_meth = meth.to_s.split('_')
+    @instance   = split_meth[0]
+    super unless INSTANCES.include?(instance)
+    send_instance_method
   end
-  # add image finder for when editing an article
-  # destroy hero image on destroy
+
+  attr_reader :instance_meth, :instance_obj
+  def send_instance_method
+    @instance_meth = split_meth[1..-1].join('_')
+    @instance_obj  = self.send(instance.to_sym)
+    raise_no_method_error unless instance_obj.respond_to?(instance_meth)
+    method_is_setter? ? send_setter_method : send_getter_method
+  end
+
+  def send_setter_method
+    instance_obj.send(instance_meth.to_sym, args[0])
+  end
+
+  def send_getter_method
+    saved_instance = self.send("saved_#{ instance }".to_sym)
+    saved_instance ? saved_instance.values[instance_meth.to_sym] : ''
+  end
+
+  def method_is_setter?
+    instance_meth.match(/\=/)
+  end
+
+  def raise_no_method_error
+    raise(NoMethodError, "#{ instance } doesn't respond to `#{ instance_meth }`")
+  end
+
+  class NoMethodError < StandardError; end
 end

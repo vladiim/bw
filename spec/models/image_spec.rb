@@ -69,7 +69,7 @@ RSpec.describe Image do
       let(:file) { {:filename=>'blah.INVALID', :type=>'image/jpeg', :name=>'image[file]', :tempfile=>Object.new, :head=>'Content-Disposition: form-data; name=\'image[file]\'; filename=\'blah.jpg\'\r\nContent-Type: image/jpeg\r\n'} }
 
       it 'raises an InvalidFileName exception' do
-        expect { image.upload!(mock) }.to raise_error(Image::InvalidFileName)
+        expect { image.upload!(mock) }.to raise_error(Image::InvalidFileNameError)
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Image do
       let(:file) { invalid_file }
 
       it 'raises an InvalidFile exception' do
-        expect { image.upload!(mock) }.to raise_error(Image::InvalidFile)
+        expect { image.upload!(mock) }.to raise_error(Image::InvalidFileError)
       end
     end
   end

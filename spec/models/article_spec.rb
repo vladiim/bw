@@ -62,54 +62,53 @@ RSpec.describe Article do
     end
   end
 
-  describe '#image_title=' do
-    it 'saves the value to the passed in image' do
-      article.image_title=('TITLE')
-      expect(article.image.title).to eq 'TITLE'
-    end
-  end
+  describe 'instance methods' do
+    context 'responds to instance' do
+      context 'method is a setter' do
+        let(:responsive_instances) { { 'image' => 'title', 'image' => 'file' } }
 
-  describe '#image_file=' do
-    it 'saves the value to the passed in image' do
-      article.image_file=('FILE')
-      expect(article.image.file).to eq 'FILE'
-    end
-  end
+        it 'sends the instance the method' do
+          responsive_instances.each do |instance, method|
+            instance_method = "#{instance}_#{method}=".to_sym
+            article.send(instance_method, 'NEW VALUE')
+            expect(article.send(instance.to_sym).send(method.to_sym)).to eq 'NEW VALUE'
+          end
+        end
+      end
 
-  describe '#image_url' do
-    context 'with saved_image' do
-      before { article.saved_image = OpenStruct.new(values: { url: 'IMAGE URL' }) }
+      context 'method is a getter' do
+        context 'with saved instance' do
 
-      it "returns the image's url" do
-        expect(article.image_url).to eq 'IMAGE URL'
+          before { article.saved_image = OpenStruct.new(values: { url: 'IMAGE URL', title: 'IMAGE TITLE' }) }
+
+          it "returns the image's url" do
+            expect(article.image_url).to eq 'IMAGE URL'
+          end
+
+          it "returns the image's title" do
+            expect(article.image_title).to eq 'IMAGE TITLE'
+          end
+        end
+
+        context 'without saved_image' do
+          it 'returns an empty string' do
+            expect(article.image_url).to eq ''
+          end
+        end
       end
     end
 
-    context 'without saved_image' do
-      it 'returns an empty string' do
-        expect(article.image_url).to eq ''
-      end
-    end
-  end
-
-  describe '#image_title' do
-    context 'with saved_image' do
-      before { article.saved_image = OpenStruct.new(values: { title: 'IMAGE TITLE' }) }
-
-      it "returns the image's title" do
-        expect(article.image_title).to eq 'IMAGE TITLE'
+    context "doesn't respond to instance" do
+      it 'returns an error' do
+        expect { article.blah_blah = 'LOL' }.to raise_error(NoMethodError)
       end
     end
 
-    context 'without saved_image' do
-      it 'returns an empty string' do
-        expect(article.image_title).to eq ''
+    context "instance doesn't respond to method" do
+      it 'returns an error' do
+        expect { article.image_blah = 'LOL' }.to raise_error(Article::NoMethodError)
       end
     end
-  end
-
-  describe '#' do
-    
   end
 end
 
