@@ -1,5 +1,7 @@
 Bw::Admin.controllers :base do
   get :index, :map => "/" do
-    render "base/index"
+    @title = "Articles"
+    @articles = Article.all
+    render "articles/index"
   end
 end

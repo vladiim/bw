@@ -16,7 +16,7 @@
     .form-actions
       =f.submit pat(:save), class: 'btn btn-success'
       &nbsp;
-      =f.submit pat(:publish), class: 'btn btn-info', name: 'publish'
+      =f.submit pat(:publish), class: 'btn btn-info'
       &nbsp;
       =link_to pat(:cancel), url(:articles, :index), class: 'btn btn-default'
 
@@ -54,16 +54,27 @@
         / Content for adding an image
         .tab-content
           %div{ class: 'tab-pane fade in active', id: 'new-image' }
-            %fieldset.control-group{ class: error ? 'has-error' : ''}
-              = f.label :image_title, class: 'control-label'
+            = f.fields_for :image, multipart: true do |image_form|
+              %fieldset.control-group
+                = image_form.label :title, class: 'control-label'
               .controls
-                ~f.text_field :image_title, value: article.image_title, class: 'form-control input-with-feedback', autofocus: true
-                %span.help-inline= f.error_message_on(:image_title, class: 'text-error') if error
-            %img{ src: "#{ article.image_url }" }
-            %fieldset.control-group
-              = f.label :image_file, class: 'control-label'
+                = image_form.text_field :title, class: 'form-control input-with-feedback'
+              %fieldset.control-group
+                = image_form.label 'Image'
               .controls
-                = f.file_field :image_file
+                = image_form.file_field :file
+
+          / %div{ class: 'tab-pane fade in active', id: 'new-image' }
+          /   %fieldset.control-group{ class: error ? 'has-error' : ''}
+          /     = f.label :image_title, class: 'control-label'
+          /     .controls
+          /       ~f.text_field :image_title, class: 'form-control input-with-feedback', autofocus: true
+          /       %span.help-inline= f.error_message_on(:image_title, class: 'text-error') if error
+          /   / %img{ src: "#{ article.image_url }" }
+          /   %fieldset.control-group
+          /     = f.label :image_file, class: 'control-label'
+          /     .controls
+          /       = f.file_field :image_file
 
           %div{ class: 'tab-pane fade', id: 'existing-image' }
             All the images
@@ -82,30 +93,7 @@
         / Content for adding a photographer
         .tab-content
           %div{ class: 'tab-pane fade in active', id: 'new-photographer' }
-            %fieldset.control-group{ class: error ? 'has-error' : ''}
-              = f.label :first_name, class: 'control-label'
-              .controls
-                ~f.text_field :photographer_first_name, class: 'form-control input-with-feedback', autofocus: true
-                %span.help-inline= f.error_message_on(:photographer_first_name, class: 'text-error') if error
-            %fieldset.control-group{ class: error ? 'has-error' : ''}
-              = f.label :last_name, class: 'control-label'
-              .controls
-                ~f.text_field :photographer_last_name, class: 'form-control input-with-feedback', autofocus: true
-                %span.help-inline= f.error_message_on(:photographer_last_name, class: 'text-error') if error
-            %fieldset.control-group{ class: error ? 'has-error' : ''}
-              = f.label :website, class: 'control-label'
-              .controls
-                ~f.text_field :photographer_website, class: 'form-control input-with-feedback', autofocus: true
-                %span.help-inline= f.error_message_on(:photographer_website, class: 'text-error') if error
-            %fieldset.control-group{ class: error ? 'has-error' : ''}
-              = f.label :bio, class: 'control-label'
-              .controls
-                ~f.text_area :photographer_bio, class: 'form-control input-with-feedback', autofocus: true
-                %span.help-inline= f.error_message_on(:photographer_bio, class: 'text-error') if error
-            %fieldset.control-group
-              = f.label :profile, class: 'control-label'
-              .controls
-                = f.file_field :profile_image
+            New photographer
 
       %div{ class: 'tab-pane fade', id: 'meta-data'}
         %h4 Meta data

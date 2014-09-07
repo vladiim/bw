@@ -1,6 +1,6 @@
 class Image < Sequel::Model
 
-  one_through_one :image, class: 'HeroImage'
+  one_through_one :article, join_table: :hero_images
 
   plugin :validation_helpers
 

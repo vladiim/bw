@@ -5,5 +5,5 @@
 %h3 New article
 
 .tabs-content
-  = form_for :article, url(:articles, :create), class: 'form-horizontal' do |f|
+  = form_for :article, url(:articles, :create), multipart: true, class: 'form-horizontal' do |f|
     = partial 'articles/form', locals: { f: f, article: @article }

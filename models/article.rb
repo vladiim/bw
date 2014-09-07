@@ -1,65 +1,78 @@
 class Article < Sequel::Model
 
-  INSTANCES = %w( image )
+  plugin :nested_attributes
 
-  attr_accessor :image, :hero_image
+  one_through_one :image, join_table: :hero_images
+  nested_attributes :image
+
+  attr_accessor :image, :hero_image, :attrs
   def initialize(attrs = {})
-    @image      = Image.new
+    @attrs = attrs
     @hero_image = HeroImage.new
+    add_image
     super(attrs)
   end
 
-  attr_accessor :saved_image, :saved_hero_image
-  def self.find(article_id)
-    article                  = Article[article_id]
-    article.saved_hero_image = HeroImage.first({ article_id: article.id })
-    article.saved_image      = Image[article.saved_hero_image.image_id]
-    article
-  end
-
   def save(super_proc = ->{ super })
-    image.upload!
-    hero_image.image_id = image.id
+    return upload_image(super_proc) if image?
     super_proc.call
-    hero_image.article_id = @values[:id]
-    hero_image.save
   end
 
   private
 
-  attr_reader :instance, :split_meth, :args
-  def method_missing(meth, *args, &block)
-    @args       = args
-    @split_meth = meth.to_s.split('_')
-    @instance   = split_meth[0]
-    super unless INSTANCES.include?(instance)
-    send_instance_method
+  def image?
+    !!image.file
   end
 
-  attr_reader :instance_meth, :instance_obj
-  def send_instance_method
-    @instance_meth = split_meth[1..-1].join('_')
-    @instance_obj  = self.send(instance.to_sym)
-    raise_no_method_error unless instance_obj.respond_to?(instance_meth)
-    method_is_setter? ? send_setter_method : send_getter_method
+  def upload_image(super_proc)
+    image.upload!
+    hero_image.image_id = image.id
+    super_proc.call
+    hero_image.article_id = id
+    hero_image.save
   end
 
-  def send_setter_method
-    instance_obj.send(instance_meth.to_sym, args[0])
+  def add_image
+    @image       = Image.new
+    image_attrs  = attrs.fetch('image_attributes') { return }
+    @image.title = image_attrs['0']['title']
+    @image.file  = image_attrs['0']['file']
+    attrs.reject! { |k| k == 'image_attributes' }
   end
 
-  def send_getter_method
-    saved_instance = self.send("saved_#{ instance }".to_sym)
-    saved_instance ? saved_instance.values[instance_meth.to_sym] : ''
-  end
+  # attr_reader :instance, :split_meth, :args
+  # def method_missing(meth, *args, &block)
+  #   @args       = args
+  #   @split_meth = meth.to_s.split('_')
+  #   @instance   = split_meth[0]
+  #   super unless INSTANCES.include?(instance)
+  #   send_instance_method
+  # end
 
-  def method_is_setter?
-    instance_meth.match(/\=/)
-  end
+  # attr_reader :instance_meth, :instance_obj
+  # def send_instance_method
+  #   @instance_meth = split_meth[1..-1].join('_')
+  #   @instance_obj  = self.send(instance.to_sym)
+  #   raise_no_method_error unless instance_obj.respond_to?(instance_meth)
+  #   method_is_setter? ? send_setter_method : send_getter_method
+  # end
 
-  def raise_no_method_error
-    raise(NoMethodError, "#{ instance } doesn't respond to `#{ instance_meth }`")
-  end
+  # def send_setter_method
+  #   instance_obj.send(instance_meth.to_sym, args[0])
+  # end
 
-  class NoMethodError < StandardError; end
+  # def send_getter_method
+  #   saved_instance = self.send("saved_#{ instance }".to_sym)
+  #   saved_instance ? saved_instance.values[instance_meth.to_sym] : ''
+  # end
+
+  # def method_is_setter?
+  #   instance_meth.match(/\=/)
+  # end
+
+  # def raise_no_method_error
+  #   raise(NoMethodError, "#{ instance } doesn't respond to `#{ instance_meth }`")
+  # end
+
+  # class NoMethodError < StandardError; end
 end
