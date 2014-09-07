@@ -8,8 +8,10 @@ require 'bundler/setup'
 Bundler.require(:default, RACK_ENV)
 
 # Load dotenv
-require 'dotenv'
-Dotenv.load
+unless Padrino.env == :production
+  require 'dotenv'
+  Dotenv.load
+end
 
 # Link Carrier Wave to AWS through Fog
 require 'fog/aws/storage'
