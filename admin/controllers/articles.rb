@@ -26,7 +26,7 @@ Bw::Admin.controllers :articles do
 
   get :edit, :with => :id do
     @title = pat(:edit_title, :model => "article #{params[:id]}")
-    @article = Article[params[:id]]
+    @article = Article.find(params[:id])
     if @article
       render 'articles/edit'
     else

@@ -1,13 +1,18 @@
-#article-form {
-  .form-actions {
-//    border-top: 1px dotted gray;
+#admin-content {
 
-    a, input {
-      width: 100%;
-      margin-bottom: -10px;
+  #article-form {
+    .form-actions {
+      a, input {
+        width: 100%;
+        margin-bottom: -10px;
+      }
+      input:first-child {
+        margin-top: 10px;
+      }
     }
-    input:first-child {
-      margin-top: 10px;
-    }
+  }
+
+  .fa {
+    display: inline-block;
   }
 }

@@ -13,7 +13,6 @@ Bw::Admin.controllers :images do
 
   post :create do
     @image = Image.new(params[:image])
-    # require 'debugger'; debugger
     if (@image.upload! rescue false)
       @title = pat(:create_title, :model => "image #{@image.id}")
       flash[:success] = pat(:create_success, :model => 'Image')

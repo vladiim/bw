@@ -58,7 +58,8 @@
               %fieldset.control-group
                 = image_form.label :title, class: 'control-label'
               .controls
-                = image_form.text_field :title, class: 'form-control input-with-feedback'
+                = image_form.text_field :title, class: 'form-control input-with-feedback', value: article.hero_image_title
+              %img{ src: "#{ article.hero_image_url }" }
               %fieldset.control-group
                 = image_form.label 'Image'
               .controls

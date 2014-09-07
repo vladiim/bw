@@ -1,7 +1,9 @@
-#article-form .form-actions a, #article-form .form-actions input {
+#admin-content #article-form .form-actions a, #admin-content #article-form .form-actions input {
   width: 100%;
   margin-bottom: -10px; }
-#article-form .form-actions input:first-child {
+#admin-content #article-form .form-actions input:first-child {
   margin-top: 10px; }
+#admin-content .fa {
+  display: inline-block; }
 
 /*# sourceMappingURL=admin.css.map */
