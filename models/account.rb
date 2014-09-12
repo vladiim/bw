@@ -2,6 +2,8 @@ class Account < Sequel::Model
 
   plugin :validation_helpers
 
+  one_to_one :photographer
+
   attr_accessor :password, :password_confirmation
 
   def validate
@@ -17,22 +19,15 @@ class Account < Sequel::Model
     validates_format       /[A-Za-z]/, :role unless role.blank?
   end
 
-  # Callbacks
   def before_save
     encrypt_password
   end
 
-  ##
-  # This method is for authentication purpose.
-  #
   def self.authenticate(email, password)
     account = filter(Sequel.function(:lower, :email) => Sequel.function(:lower, email)).first
     account && account.has_password?(password) ? account : nil
   end
 
-  ##
-  # Replace ActiveRecord method.
-  #
   def self.find_by_id(id)
     self[id] rescue nil
   end
