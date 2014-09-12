@@ -5,14 +5,22 @@ RSpec.describe Article do
   let(:article) { Article.new }
 
   describe '#initialize' do
+    let(:article) { Article.new(attrs) }
 
     context 'with image attrs' do
-      let(:attrs)   { { "title"=>"", "body"=>"", "image_attributes"=>{ "0"=>{ "title"=>"IMAGE TITLE", "file"=>'IMAGE FILE' } } } }
-      let(:article) { Article.new(attrs) }
+      let(:attrs)   { { "image_attributes"=>{ "0"=>{ "title"=>"IMAGE TITLE", "file"=>'IMAGE FILE' } } } }
 
       it 'sets up the image' do
         expect(article.image.title).to eq 'IMAGE TITLE'
         expect(article.image.file).to eq 'IMAGE FILE'
+      end
+    end
+
+    context 'with photographer attrs' do
+      let(:attrs) { { "photographer_attributes"=>{ "name"=>"PHOTO NAME" } } }
+
+      it 'sets up the photographer' do
+        expect(article.photographer.name).to eq 'PHOTO NAME'
       end
     end
   end
@@ -123,6 +131,10 @@ class NullHeroImage; end
 class Image < Sequel::Model
   attr_accessor :file
   def upload!; end
+end
+
+class Photographer < Sequel::Model
+  attr_accessor :name
 end
 
 class HeroImage

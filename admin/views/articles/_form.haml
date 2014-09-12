@@ -31,14 +31,14 @@
         %fieldset.control-group{ class: error ? 'has-error' : ''}
           =f.label :title, class: 'control-label'
           .controls
-            ~f.text_field :title, class: 'form-control input-with-feedback', autofocus: true
+            ~f.text_field :title, class: 'form-control input-with-feedback', autofocus: true, placeholder: 'Article title'
             %span.help-inline= f.error_message_on(:title, class: 'text-error') if error
 
         - error = @article.errors.key?(:body) && @article.errors[:body].count > 0
         %fieldset.control-group{:class => error ? 'has-error' : ''}
           =f.label :body, :class => 'control-label'
           .controls
-            ~f.text_area :body, :class => 'form-control input-large input-with-feedback'
+            ~f.text_area :body, :class => 'form-control input-large input-with-feedback', placeholder: 'Article body'
             %span.help-inline= f.error_message_on(:body, :class => 'text-error') if error
 
       / Hero image
@@ -52,33 +52,22 @@
             %a{ href: '#existing-image', role: 'tab', 'data-toggle' => 'tab' } Use existing
 
         / Content for adding an image
-        .tab-content
-          %div{ class: 'tab-pane fade in active', id: 'new-image' }
-            = f.fields_for :image, multipart: true do |image_form|
-              %fieldset.control-group
-                = image_form.label :title, class: 'control-label'
-              .controls
-                = image_form.text_field :title, class: 'form-control input-with-feedback', value: article.hero_image_title
-              %img{ src: "#{ article.hero_image_url }" }
-              %fieldset.control-group
-                = image_form.label 'Image'
-              .controls
-                = image_form.file_field :file
+        .container
+          .tab-content
+            %div{ class: 'tab-pane fade in active', id: 'new-image' }
+              = f.fields_for :image, multipart: true do |image_form|
+                %fieldset.control-group
+                  = image_form.label :title, class: 'control-label'
+                .controls
+                  = image_form.text_field :title, class: 'form-control input-with-feedback', placeholder: 'Image title', value: article.hero_image_title
+                %img{ src: "#{ article.hero_image_url }" }
+                %fieldset.control-group
+                  = image_form.label 'Image'
+                .controls
+                  = image_form.file_field :file
 
-          / %div{ class: 'tab-pane fade in active', id: 'new-image' }
-          /   %fieldset.control-group{ class: error ? 'has-error' : ''}
-          /     = f.label :image_title, class: 'control-label'
-          /     .controls
-          /       ~f.text_field :image_title, class: 'form-control input-with-feedback', autofocus: true
-          /       %span.help-inline= f.error_message_on(:image_title, class: 'text-error') if error
-          /   / %img{ src: "#{ article.image_url }" }
-          /   %fieldset.control-group
-          /     = f.label :image_file, class: 'control-label'
-          /     .controls
-          /       = f.file_field :image_file
-
-          %div{ class: 'tab-pane fade', id: 'existing-image' }
-            All the images
+            %div{ class: 'tab-pane fade', id: 'existing-image' }
+              All the images
 
       / Photographer
       %div{ class: 'tab-pane fade', id: 'photographer'}
@@ -92,9 +81,14 @@
             %a{ href: '#existing-photographer', role: 'tab', 'data-toggle' => 'tab' } Use existing
 
         / Content for adding a photographer
-        .tab-content
-          %div{ class: 'tab-pane fade in active', id: 'new-photographer' }
-            New photographer
+        .container
+          .tab-content
+            %div{ class: 'tab-pane fade in active', id: 'new-photographer' }
+              = f.fields_for :photographer, multipart: true do |photographer_form|
+                %fieldset.control-group
+                  = photographer_form.label :name, class: 'control-label'
+                .controls
+                  = photographer_form.text_field :name, class: 'form-control input-with-feedback' #, value: article.photographer_name
 
       %div{ class: 'tab-pane fade', id: 'meta-data'}
         %h4 Meta data

@@ -3,15 +3,16 @@ class Article < Sequel::Model
   plugin :nested_attributes
 
   one_through_one :image, join_table: :hero_images
-  nested_attributes :image
+  one_through_one :photographer
 
-  attr_accessor :image, :hero_image, :attrs
+  nested_attributes :image, :photographer
+
+  attr_reader :attrs, :image, :hero_image, :photographer
   def initialize(attrs = {})
-    @attrs      = attrs
-    @hero_image = HeroImage.new
-    @image      = Image.new
+    set_attrs(attrs)
     add_hero_image
-    super(attrs)
+    add_photographer
+    super
   end
 
   def save(super_proc = ->{ super })
@@ -37,11 +38,27 @@ class Article < Sequel::Model
 
   private
 
+  def set_attrs(attrs)
+    @attrs        = attrs
+    @hero_image   = HeroImage.new
+    @image        = Image.new
+    @photographer = Photographer.new
+  end
+
+
   def add_hero_image
     image_attrs  = attrs.fetch('image_attributes') { return }
-    @image.title = image_attrs['0']['title']
-    @image.file  = image_attrs['0']['file']
+    image.title  = image_attrs['0']['title']
+    image.file   = image_attrs['0']['file']
     attrs.reject! { |k| k == 'image_attributes' }
+  end
+
+  def add_photographer
+    photo_attrs =  attrs.fetch('photographer_attributes') { return }
+    # @photographer = Photographer.new
+    # require 'debugger'; debugger
+    photographer.name = photo_attrs['name']
+    attrs.reject! { |k| k == 'photographer_attributes' }
   end
 
   def hero_image_file?

@@ -14,8 +14,6 @@ RSpec.describe Image do
     # url
     it { is_expected.to have_column :url, type: String }
     it { is_expected.to validate_presence :url, allow_nil: false }
-    # photographer_id
-    it { is_expected.to have_column :photographer_id, type: Integer }
     # created_at
     it { is_expected.to have_column :created_at, type: :datetime }
     it { is_expected.to validate_presence :created_at, allow_nil: false }
